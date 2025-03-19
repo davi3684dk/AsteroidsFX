@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Bullet" />
+        <module name="Player" />
+        <module name="Asteroid" />
+        <module name="CommonCollision" />
+        <module name="Collision" />
+        <module name="CommonAsteroid" />
+        <module name="CommonBullet" />
+        <module name="Core" />
+        <module name="Common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value=" " />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Asteroid" options="" />
+      <module name="AstroidsFX" options="" />
+      <module name="Bullet" options="" />
+      <module name="Collision" options="" />
+      <module name="Common" options="" />
+      <module name="CommonAsteroid" options="" />
+      <module name="CommonBullet" options="" />
+      <module name="CommonCollision" options="" />
+      <module name="Core" options="" />
+      <module name="Player" options="" />
+    </option>
+  </component>
+</project>
