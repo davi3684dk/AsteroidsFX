@@ -5,7 +5,7 @@ import dk.sdu.cbse.services.IPlugin;
 module Core {
     requires javafx.graphics;
     requires Common;
-    opens dk.sdu.cbse.main to javafx.graphics;
+    opens dk.sdu.cbse to javafx.graphics;
     uses IEntityProcessing;
     uses IEntityPostProcessing;
     uses IPlugin;

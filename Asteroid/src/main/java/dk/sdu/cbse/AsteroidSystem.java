@@ -1,4 +1,4 @@
-package dk.sdu.cbse.asteroid;
+package dk.sdu.cbse;
 
 import dk.sdu.cbse.commoncollision.IEntityCollisionProcessor;
 import dk.sdu.cbse.commonasteroid.Asteroid;
