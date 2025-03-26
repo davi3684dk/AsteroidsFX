@@ -1,4 +1,4 @@
-package dk.sdu.cbse;
+package dk.sdu.asteroid;
 
 import dk.sdu.cbse.data.GameData;
 import dk.sdu.cbse.data.World;

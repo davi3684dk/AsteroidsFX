@@ -1,4 +1,4 @@
-package dk.sdu.cbse;
+package dk.sdu.cbse.core;
 
 import dk.sdu.cbse.data.*;
 import dk.sdu.cbse.services.IEntityPostProcessing;
@@ -14,14 +14,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.lang.module.Configuration;
-import java.lang.module.ModuleDescriptor;
-import java.lang.module.ModuleFinder;
-import java.lang.module.ModuleReference;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Hello world!
@@ -34,13 +27,11 @@ public class Main extends Application
     private final World world = new World();
     private final HashMap<Entity, Polygon> entityPolygonHashMap = new HashMap<>();
     private final Text text = new Text(10, 20, "FPS: 10 \n Bullets: 0");
-    private static ModuleLayer layer;
 
     private final Time time = new Time();
 
     public static void main( String[] args )
     {
-        layer = PluginsLayer.getLayer();
         launch(Main.class);
     }
 
@@ -152,15 +143,15 @@ public class Main extends Application
     }
 
     private Iterator<? extends IPlugin> getPluginServices() {
-        return ServiceLoader.load(layer, IPlugin.class).iterator();
+        return ServiceLoader.load(IPlugin.class).iterator();
     }
 
     private Iterator<? extends IEntityProcessing> GetEntityProcessingServices() {
-        return ServiceLoader.load(layer, IEntityProcessing.class).iterator();
+        return ServiceLoader.load(IEntityProcessing.class).iterator();
     }
 
     private Iterator<? extends IEntityPostProcessing> GetEntityPostProcessingServices() {
-        return ServiceLoader.load(layer, IEntityPostProcessing.class).iterator();
+        return ServiceLoader.load(IEntityPostProcessing.class).iterator();
     }
 }
 

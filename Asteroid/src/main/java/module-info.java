@@ -1,5 +1,5 @@
-import dk.sdu.cbse.AsteroidPlugin;
-import dk.sdu.cbse.AsteroidSystem;
+import dk.sdu.asteroid.AsteroidPlugin;
+import dk.sdu.asteroid.AsteroidSystem;
 import dk.sdu.cbse.commoncollision.IEntityCollisionProcessor;
 import dk.sdu.cbse.services.IEntityProcessing;
 import dk.sdu.cbse.services.IPlugin;

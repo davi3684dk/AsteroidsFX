@@ -41,6 +41,6 @@ public class CollisionDetector implements IEntityPostProcessing {
     }
 
     public Iterator<IEntityCollisionProcessor> getCollisionProcessors() {
-        return ServiceLoader.load(PluginsLayer.getLayer(), IEntityCollisionProcessor.class).iterator();
+        return ServiceLoader.load(IEntityCollisionProcessor.class).iterator();
     }
 }
