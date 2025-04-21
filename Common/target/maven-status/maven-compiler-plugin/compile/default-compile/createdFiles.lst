@@ -9,4 +9,3 @@ dk\sdu\cbse\data\Input.class
 dk\sdu\cbse\data\Time.class
 dk\sdu\cbse\data\GameData.class
 dk\sdu\cbse\services\IEntityPostProcessing.class
-dk\sdu\cbse\data\PluginsLayer.class

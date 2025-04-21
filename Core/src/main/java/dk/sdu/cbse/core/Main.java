@@ -74,7 +74,7 @@ public class Main extends Application
 
 
         //Run start method for all plugins
-        getPluginServices().forEachRemaining(p -> p.start(gameData, world));
+        getPluginServices().forEach(p -> p.start(gameData, world));
 
         initRenderer();
 
@@ -94,7 +94,7 @@ public class Main extends Application
                 time.setDeltaTime(nowSeconds - time.getNow());
                 time.setNow(nowSeconds);
 
-                GetEntityProcessingServices().forEachRemaining(e -> e.process(time, gameData, world));
+                GetEntityProcessingServices().forEach(e -> e.process(time, gameData, world));
 
                 avg = avg * (n-1)/n + (1 / time.getDeltaTime()) / n;
                 n++;
@@ -109,7 +109,7 @@ public class Main extends Application
 
                 gameData.getInput().update();
 
-                GetEntityPostProcessingServices().forEachRemaining(e -> e.postProcess(time, gameData, world));
+                GetEntityPostProcessingServices().forEach(e -> e.postProcess(time, gameData, world));
             }
         }.start();
     }
@@ -142,16 +142,32 @@ public class Main extends Application
         }
     }
 
-    private Iterator<? extends IPlugin> getPluginServices() {
-        return ServiceLoader.load(IPlugin.class).iterator();
+    private List<IPlugin> plugins;
+    private List<IEntityProcessing> entityProcessings;
+    private List<IEntityPostProcessing> entityPostProcessings;
+
+    private List<IPlugin> getPluginServices() {
+        if (plugins == null) {
+            plugins = new ArrayList<>();
+            ServiceLoader.load(IPlugin.class).forEach(plugins::add);
+        }
+        return plugins;
     }
 
-    private Iterator<? extends IEntityProcessing> GetEntityProcessingServices() {
-        return ServiceLoader.load(IEntityProcessing.class).iterator();
+    private List<IEntityProcessing> GetEntityProcessingServices() {
+        if (entityProcessings == null) {
+            entityProcessings = new ArrayList<>();
+            ServiceLoader.load(IEntityProcessing.class).forEach(entityProcessings::add);
+        }
+        return entityProcessings;
     }
 
-    private Iterator<? extends IEntityPostProcessing> GetEntityPostProcessingServices() {
-        return ServiceLoader.load(IEntityPostProcessing.class).iterator();
+    private List<IEntityPostProcessing> GetEntityPostProcessingServices() {
+        if (entityPostProcessings == null) {
+            entityPostProcessings = new ArrayList<>();
+            ServiceLoader.load(IEntityPostProcessing.class).forEach(entityPostProcessings::add);
+        }
+        return entityPostProcessings;
     }
 }
 

@@ -4,8 +4,7 @@ import dk.sdu.cbse.commoncollision.IEntityCollisionProcessor;
 import dk.sdu.cbse.data.*;
 import dk.sdu.cbse.services.IEntityPostProcessing;
 
-import java.util.Iterator;
-import java.util.ServiceLoader;
+import java.util.*;
 
 public class CollisionDetector implements IEntityPostProcessing {
 
@@ -15,22 +14,32 @@ public class CollisionDetector implements IEntityPostProcessing {
     @Override
     public void postProcess(Time time, GameData gameData, World world) {
         // two for loops for all entities in the world
-        for (Entity entity1 : world.getEntities().stream().toList()) {
-            for (Entity entity2 : world.getEntities().stream().toList()) {
+        List<Entity> entities = new ArrayList<>(world.getEntities());
+        Set<Entity> toRemove = new HashSet<>();
+
+        for (int i = 0; i < entities.size(); i++) {
+            Entity entity1 = entities.get(i);
+            if (toRemove.contains(entity1)) continue;
+
+            for (int j = i + 1; j < entities.size(); j++) {
+                Entity entity2 = entities.get(j);
+                if (toRemove.contains(entity2)) continue;
 
                 if (entity1.getLayer() == entity2.getLayer())
                     continue;
 
                 // CollisionDetection
                 if (this.collides(entity1, entity2)) {
-                    getCollisionProcessors().forEachRemaining(p -> p.onCollision(time, gameData, world, entity1, entity2));
-                    world.removeEntity(entity1);
-                    world.removeEntity(entity2);
+                    getCollisionProcessors().forEach(p -> p.onCollision(time, gameData, world, entity1, entity2));
                     entity1.setDead(true);
                     entity2.setDead(true);
+                    toRemove.add(entity1);
+                    toRemove.add(entity2);
                 }
             }
         }
+
+        toRemove.forEach(world::removeEntity);
     }
 
     public Boolean collides(Entity entity1, Entity entity2) {
@@ -40,7 +49,12 @@ public class CollisionDetector implements IEntityPostProcessing {
         return distance < (entity1.getRadius() + entity2.getRadius());
     }
 
-    public Iterator<IEntityCollisionProcessor> getCollisionProcessors() {
-        return ServiceLoader.load(IEntityCollisionProcessor.class).iterator();
+    List<IEntityCollisionProcessor> collisionProcessors;
+    public List<IEntityCollisionProcessor> getCollisionProcessors() {
+        if (collisionProcessors == null) {
+            collisionProcessors = new ArrayList<>();
+            ServiceLoader.load(IEntityCollisionProcessor.class).forEach(collisionProcessors::add);
+        }
+        return collisionProcessors;
     }
 }

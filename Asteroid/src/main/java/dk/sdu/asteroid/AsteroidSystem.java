@@ -13,6 +13,7 @@ import java.util.Random;
 
 public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCollisionProcessor {
     Random rand = new Random();
+    boolean collision = false;
 
     @Override
     public void process(Time time, GameData gameData, World world) {
@@ -37,8 +38,9 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
             asteroid.setPosition(newPos);
         }
 
-        if (asteroidList.size() < 20) {
+        if (!collision) {
 
+            collision = true;
             Vector position;
 
             if (rand.nextBoolean()) {
@@ -76,7 +78,7 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
         asteroid.setColor(color.getRed()/255d, color.getGreen()/255d, color.getBlue()/255d);
         asteroid.setPosition(position);
         asteroid.setRotation(rotation);
-        asteroid.setSpeed(rand.nextDouble(50, 100));
+        asteroid.setSpeed(20 + (1f/hp) * 100);
         asteroid.setLayer(Layer.Enemy);
         asteroid.setHp(hp);
 
@@ -106,7 +108,7 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
     }
 
     private List<SplitterAsteroid> splitAsteroid(SplitterAsteroid asteroid, double rotation) {
-        if (asteroid.getHp() <= 0)
+        if (asteroid.getHp() <= 1)
             return new ArrayList<>();
 
         double maxPoint = Arrays.stream(asteroid.getPolygonCoordinates()).map(Math::abs).max().getAsDouble();
