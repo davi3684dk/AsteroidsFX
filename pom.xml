@@ -18,6 +18,7 @@
         <module>CommonAsteroid</module>
         <module>Asteroid</module>
         <module>CommonCollision</module>
+        <module>Enemy</module>
     </modules>
 
     <properties>

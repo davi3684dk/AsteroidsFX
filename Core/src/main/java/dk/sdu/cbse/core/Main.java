@@ -30,6 +30,9 @@ public class Main extends Application
 
     private final Time time = new Time();
 
+    private final int fps = 120;
+    private double lastFrame;
+
     public static void main( String[] args )
     {
         launch(Main.class);
@@ -87,12 +90,21 @@ public class Main extends Application
     double avg;
     double n = 1;
     private void initRenderer() {
+        gameWindow.setStyle("-fx-background-color: black;");
+        double nt = System.nanoTime();
+
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double nowSeconds = now / 1000000000d;
-                time.setDeltaTime(nowSeconds - time.getNow());
+                double nowSeconds = (now - nt) / 1000000000d;
+
+                if (nowSeconds - lastFrame < 1d/fps) {
+                    return;
+                }
                 time.setNow(nowSeconds);
+                time.setDeltaTime(time.getNow() - lastFrame);
+
+                lastFrame = nowSeconds;
 
                 GetEntityProcessingServices().forEach(e -> e.process(time, gameData, world));
 
@@ -131,7 +143,8 @@ public class Main extends Application
 
             if (polygon == null) {
                 polygon = new Polygon(entity.getPolygonCoordinates());
-                polygon.setFill(Color.color(entity.getColor()[0], entity.getColor()[1], entity.getColor()[2]));
+                polygon.setFill(Color.TRANSPARENT);
+                polygon.setStroke(Color.color(entity.getColor()[0], entity.getColor()[1], entity.getColor()[2]));
                 entityPolygonHashMap.put(entity,polygon);
                 gameWindow.getChildren().add(polygon);
             }

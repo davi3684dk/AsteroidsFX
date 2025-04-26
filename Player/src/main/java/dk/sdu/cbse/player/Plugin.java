@@ -13,7 +13,7 @@ public class Plugin implements IPlugin {
         player = new Player();
         player.getPosition().setX(gameData.getDisplayWidth() / 2d);
         player.getPosition().setY(gameData.getDisplayHeight() / 2d);
-        player.setColor(0, 1, 0);
+        player.setColor(1, 1, 1);
         player.setPolygonCoordinates(-10,-10,20,0,-10,10,-6,0);
         player.setRadius(8);
         player.setLayer(Layer.Player);

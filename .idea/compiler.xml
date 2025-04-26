@@ -11,6 +11,7 @@
         <module name="Asteroid" />
         <module name="CommonCollision" />
         <module name="Collision" />
+        <module name="Enemy" />
         <module name="CommonAsteroid" />
         <module name="CommonBullet" />
         <module name="Common" />

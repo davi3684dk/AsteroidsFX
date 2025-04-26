@@ -13,7 +13,6 @@ import java.util.Random;
 
 public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCollisionProcessor {
     Random rand = new Random();
-    boolean collision = false;
 
     @Override
     public void process(Time time, GameData gameData, World world) {
@@ -38,9 +37,9 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
             asteroid.setPosition(newPos);
         }
 
-        if (!collision) {
+        int maxAsteroids = 4 + (int) (Math.pow(time.getNow() / 60, 0.7) * 4);
 
-            collision = true;
+        if (asteroidList.size() < maxAsteroids) {
             Vector position;
 
             if (rand.nextBoolean()) {
@@ -55,13 +54,13 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
     }
 
     private double[] proceduralAsteroid(int hp) {
-        double[] points = new double[rand.nextInt(6, 8) * 2];
+        double[] points = new double[rand.nextInt(10, 12) * 2];
 
         double rad = 2 * Math.PI / points.length;
 
         for (int i = 0; i < points.length; i+=2) {
-            points[i] = Math.cos(rad * i) * rand.nextDouble(5,10) * Math.sqrt(hp);
-            points[i+1] = Math.sin(rad * i) * rand.nextDouble(5,10) * Math.sqrt(hp);
+            points[i] = Math.cos(rad * i) * rand.nextDouble(5,15) * Math.sqrt(hp);
+            points[i+1] = Math.sin(rad * i) * rand.nextDouble(5,15) * Math.sqrt(hp);
         }
 
         return points;

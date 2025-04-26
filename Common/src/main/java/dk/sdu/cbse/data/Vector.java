@@ -33,9 +33,21 @@ public class Vector {
         return new Vector(x + vector.getX(), y + vector.getY());
     }
 
-    public void normalize() {
+    public Vector scale(double scale) {
+        return new Vector(x * scale, y * scale);
+    }
+
+    public Vector normalize() {
         double mag = magnitude();
-        x = x/mag;
-        y = y/mag;
+        if (mag == 0)
+            return new Vector(0, 0);
+        return new Vector(x/mag, y/mag);
+    }
+
+    public Vector clamp(double length) {
+        Vector normal = normalize();
+        double mag = magnitude();
+        double f = Math.min(length, mag);
+        return new Vector(f * normal.getX(), f * normal.getY());
     }
 }
