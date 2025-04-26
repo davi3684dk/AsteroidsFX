@@ -41,6 +41,8 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception {
 
+        text.setFill(Color.WHITE);
+
         gameWindow.setPrefSize(gameData.getDisplayWidth(),gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
         Scene scene = new Scene(gameWindow);
@@ -113,7 +115,7 @@ public class Main extends Application
 
                 if (time.getNow() - lastUIRefresh > 0.5) {
                     lastUIRefresh = time.getNow();
-                    text.setText("FPS: " + (int)avg + " ENTITIES: " + world.getEntities().size());
+                    text.setText("FPS: " + (int)avg + " SCORE: " + gameData.getScore());
                     avg = 0;
                     n = 1;
                 }

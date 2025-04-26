@@ -94,13 +94,15 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
 
     @Override
     public void onCollision(Time time, GameData gameData, World world, Entity entity1, Entity entity2) {
-        if (entity1 instanceof SplitterAsteroid)  {
-            for (Entity ent : splitAsteroid((SplitterAsteroid) entity1, entity2.getRotation())) {
+        if (entity1 instanceof SplitterAsteroid splitter)  {
+            gameData.addScore((int) ((1f / splitter.getHp()) * 1000));
+            for (Entity ent : splitAsteroid(splitter, entity2.getRotation())) {
                 world.addEntity(ent);
             }
         }
-        else if (entity2 instanceof SplitterAsteroid)  {
-            for (Entity ent : splitAsteroid((SplitterAsteroid) entity2, entity1.getRotation())) {
+        else if (entity2 instanceof SplitterAsteroid splitter)  {
+            gameData.addScore((int) ((1f / splitter.getHp()) * 1000));
+            for (Entity ent : splitAsteroid(splitter, entity1.getRotation())) {
                 world.addEntity(ent);
             }
         }
