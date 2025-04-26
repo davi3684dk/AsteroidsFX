@@ -27,11 +27,11 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
 
             if (newPos.getX() < 0)
                 newPos.setX(gameData.getDisplayWidth() + newPos.getX());
-            if (newPos.getY() < 0)
+            else if (newPos.getY() < 0)
                 newPos.setY(gameData.getDisplayHeight() + newPos.getY());
-            if (newPos.getX() > gameData.getDisplayWidth())
+            else if (newPos.getX() > gameData.getDisplayWidth())
                 newPos.setX(gameData.getDisplayWidth() - newPos.getX());
-            if (newPos.getY() > gameData.getDisplayHeight())
+            else if (newPos.getY() > gameData.getDisplayHeight())
                 newPos.setY(gameData.getDisplayHeight() - newPos.getY());
 
             asteroid.setPosition(newPos);

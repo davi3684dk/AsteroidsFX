@@ -23,49 +23,55 @@ public class EnemyMovementSystem implements IEntityProcessing {
 
             if (newPos.getX() < 0)
                 newPos.setX(gameData.getDisplayWidth() + newPos.getX());
-            if (newPos.getY() < 0)
+            else if (newPos.getY() < 0)
                 newPos.setY(gameData.getDisplayHeight() + newPos.getY());
-            if (newPos.getX() > gameData.getDisplayWidth())
+            else if (newPos.getX() > gameData.getDisplayWidth())
                 newPos.setX(gameData.getDisplayWidth() - newPos.getX());
-            if (newPos.getY() > gameData.getDisplayHeight())
+            else if (newPos.getY() > gameData.getDisplayHeight())
                 newPos.setY(gameData.getDisplayHeight() - newPos.getY());
 
             enemy.setPosition(newPos);
 
             if (time.getNow() - enemy.lastDirectionChange > enemy.directionChangeFrequency) {
                 enemy.lastDirectionChange = time.getNow();
-                enemy.setRotation(Math.random() * 360);
+                enemy.setRotation(enemy.getRotation() + Math.random() * 45);
             }
 
-            int maxEnemies = (int)(Math.pow(time.getNow(), 0.7) * 3 - 1);
-            if (enemies.size() < maxEnemies) {
-
-                Vector position;
-                if (rand.nextBoolean()) {
-                    position = new Vector(0, rand.nextDouble(gameData.getDisplayHeight()));
+            if (time.getNow() - enemy.lastFireTime > enemy.fireDelay) {
+                enemy.lastFireTime = time.getNow();
+                if (rand.nextDouble() < 0.3) {
+                    Entity bullet = getBulletSPI().createBullet(enemy.getPosition(), enemy.getRotation());
+                    bullet.setLayer(Layer.Enemy);
+                    world.addEntity(bullet);
                 }
-                else {
-                    position = new Vector(rand.nextDouble(gameData.getDisplayWidth()), 0);
-                }
-
             }
+        }
+
+        int maxEnemies = (int) (Math.pow(time.getNow() / 60, 0.4) * 2);
+        if (enemies.size() < maxEnemies) {
+
+            Vector position;
+            if (rand.nextBoolean()) {
+                position = new Vector(0, rand.nextDouble(gameData.getDisplayHeight()));
+            }
+            else {
+                position = new Vector(rand.nextDouble(gameData.getDisplayWidth()), 0);
+            }
+            world.addEntity(createEnemy(position));
         }
     }
 
     private Enemy createEnemy(Vector position) {
-        Enemy enemy = new Enemy();
+        Enemy enemy = new Enemy(60, 2);
         enemy.setPosition(position);
-        enemy.setColor(1, 1, 1);
-        enemy.setPolygonCoordinates(-10,-10,20,0,-10,10,-6,0);
-        enemy.setRadius(8);
-        enemy.setLayer(Layer.Player);
-
-        world.addEntity(player);
-
-        System.out.println("Added PLAYER");
+        enemy.setColor(1, 0, 0);
+        enemy.setPolygonCoordinates(-15,-10,15,0,-15,10,-11,0);
+        enemy.setRadius(15);
+        enemy.setLayer(Layer.Enemy);
+        return enemy;
     }
 
-    private BulletSPI GetBulletSPI() {
+    private BulletSPI getBulletSPI() {
         return ServiceLoader.load(BulletSPI.class).findFirst().orElse(null);
     }
 }

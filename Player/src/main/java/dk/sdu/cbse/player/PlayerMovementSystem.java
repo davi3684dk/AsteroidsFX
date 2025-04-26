@@ -10,9 +10,9 @@ import static dk.sdu.cbse.player.Plugin.player;
 
 public class PlayerMovementSystem implements IEntityProcessing {
     Vector velocity = new Vector(0,0);
-    float maxVelocity = 60;
-    double friction = 5;
-    double acceleration = 100;
+    float maxVelocity = 150;
+    double friction = 0.8;
+    double acceleration = 400;
 
     @Override
     public void process(Time time, GameData gameData, World world) {
@@ -36,7 +36,7 @@ public class PlayerMovementSystem implements IEntityProcessing {
 
         Vector newPos = player.getPosition().add(velocity.scale(time.getDeltaTime()));
         player.setPosition(newPos);
-        Vector frictionVec = velocity.normalize().scale(-1).scale(friction * time.getDeltaTime());
+        Vector frictionVec = velocity.scale(-1).scale(friction * time.getDeltaTime());
         velocity = velocity.add(frictionVec).clamp(maxVelocity);
 
         if (gameData.getInput().isDown(Input.SPACE) && (time.getNow() - player.lastFireTime) > player.fireDelay) {
@@ -46,6 +46,7 @@ public class PlayerMovementSystem implements IEntityProcessing {
             if (bulletSPI != null) {
                 Entity bullet = bulletSPI.createBullet(player.getPosition(), player.getRotation());
                 bullet.setLayer(Layer.Player);
+                bullet.setColor(1,1,1);
                 world.addEntity(bullet);
             }
         }

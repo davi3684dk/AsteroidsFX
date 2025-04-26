@@ -4,7 +4,7 @@ import dk.sdu.cbse.data.Entity;
 
 public class Enemy extends Entity {
     double lastFireTime;
-    double fireDelay = 0.25;
+    double fireDelay = 0.5;
     private double speed;
     double directionChangeFrequency;
     double lastDirectionChange;
