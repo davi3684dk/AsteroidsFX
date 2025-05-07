@@ -8,6 +8,7 @@ import dk.sdu.cbse.services.IEntityPostProcessing;
 import java.util.*;
 
 public class CollisionDetector implements IEntityPostProcessing {
+    private List<IEntityCollisionProcessor> collisionProcessors;
 
     public CollisionDetector() {
     }
@@ -75,6 +76,10 @@ public class CollisionDetector implements IEntityPostProcessing {
             boolean collision = polygonLineCollision(coordinates2, coordinates1[current], coordinates1[next]);
             if (collision)
                 return true;
+
+            collision = pointPolygonCollision(coordinates2, coordinates1[current]);
+            if (collision)
+                return true;
         }
 
         return false;
@@ -117,8 +122,25 @@ public class CollisionDetector implements IEntityPostProcessing {
         return (ua >= 0 && ua <= 1) && (ub >= 0 && ub <= 1);
     }
 
-    List<IEntityCollisionProcessor> collisionProcessors;
-    public List<IEntityCollisionProcessor> getCollisionProcessors() {
+    public boolean pointPolygonCollision(Vector[] coordinates, Vector point) {
+        //Create line to the right
+        Vector lineEnd = point.add(new Vector(100,0));
+
+        int edgesHit = 0;
+        int next = 0;
+        for (int current = 0; current < coordinates.length; current++) {
+            next = current + 1;
+            if (next == coordinates.length)
+                next = 0;
+
+            if (lineLineCollision(point, lineEnd, coordinates[current], coordinates[next]))
+                edgesHit++;
+        }
+
+        return edgesHit % 2 != 0;
+    }
+
+    private List<IEntityCollisionProcessor> getCollisionProcessors() {
         if (collisionProcessors == null) {
             collisionProcessors = new ArrayList<>();
             ServiceLoader.load(IEntityCollisionProcessor.class).forEach(collisionProcessors::add);
