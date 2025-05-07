@@ -2,7 +2,7 @@ package dk.sdu.cbse.data;
 
 import java.util.UUID;
 
-public abstract class Entity {
+public class Entity {
     private UUID id = UUID.randomUUID();
 
     private double[] polygon;

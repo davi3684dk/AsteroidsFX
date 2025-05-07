@@ -112,9 +112,6 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
         if (asteroid.getHp() <= 1)
             return new ArrayList<>();
 
-        double maxPoint = Arrays.stream(asteroid.getPolygonCoordinates()).map(Math::abs).max().getAsDouble();
-        double scale = (maxPoint / 10);
-
         ArrayList<SplitterAsteroid> asteroids = new ArrayList<>();
 
         asteroids.add(

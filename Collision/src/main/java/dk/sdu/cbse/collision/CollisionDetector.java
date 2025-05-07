@@ -43,13 +43,6 @@ public class CollisionDetector implements IEntityPostProcessing {
         toRemove.forEach(world::removeEntity);
     }
 
-    public Boolean collides(Entity entity1, Entity entity2) {
-        float dx = (float) entity1.getPosition().getX() - (float) entity2.getPosition().getX();
-        float dy = (float) entity1.getPosition().getY() - (float) entity2.getPosition().getY();
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-        return distance < (entity1.getRadius() + entity2.getRadius());
-    }
-
     private Vector[] getWorldCoordinates(Entity entity) {
         Vector[] coordinates = new Vector[entity.getPolygonCoordinates().length / 2];
 
