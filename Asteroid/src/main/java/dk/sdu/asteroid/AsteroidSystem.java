@@ -3,16 +3,17 @@ package dk.sdu.asteroid;
 import dk.sdu.cbse.commoncollision.IEntityCollisionProcessor;
 import dk.sdu.cbse.commonasteroid.Asteroid;
 import dk.sdu.cbse.commonasteroid.AsteroidSPI;
+import dk.sdu.cbse.commonscore.ScoreSPI;
 import dk.sdu.cbse.data.*;
+import dk.sdu.cbse.data.Vector;
 import dk.sdu.cbse.services.IEntityProcessing;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCollisionProcessor {
     Random rand = new Random();
+
+    private ScoreSPI scoreSPI = ServiceLoader.load(ScoreSPI.class).findFirst().orElse(null);
 
     @Override
     public void process(Time time, GameData gameData, World world) {
@@ -95,13 +96,15 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
     @Override
     public void onCollision(Time time, GameData gameData, World world, Entity entity1, Entity entity2) {
         if (entity1 instanceof SplitterAsteroid splitter)  {
-            gameData.addScore((int) ((1f / splitter.getHp()) * 1000));
+            if (scoreSPI != null)
+                scoreSPI.addScore((int) ((1f / splitter.getHp()) * 1000));
             for (Entity ent : splitAsteroid(splitter, entity2.getRotation())) {
                 world.addEntity(ent);
             }
         }
         else if (entity2 instanceof SplitterAsteroid splitter)  {
-            gameData.addScore((int) ((1f / splitter.getHp()) * 1000));
+            if (scoreSPI != null)
+                scoreSPI.addScore((int) ((1f / splitter.getHp()) * 1000));
             for (Entity ent : splitAsteroid(splitter, entity1.getRotation())) {
                 world.addEntity(ent);
             }

@@ -1,5 +1,6 @@
 package dk.sdu.cbse.core;
 
+import dk.sdu.cbse.commonscore.ScoreSPI;
 import dk.sdu.cbse.data.*;
 import dk.sdu.cbse.services.IEntityPostProcessing;
 import dk.sdu.cbse.services.IEntityProcessing;
@@ -32,6 +33,8 @@ public class Main extends Application
 
     private final int fps = 120;
     private double lastFrame;
+
+    private final ScoreSPI scoreSPI = ServiceLoader.load(ScoreSPI.class).findFirst().orElse(null);
 
     public static void main( String[] args )
     {
@@ -115,7 +118,11 @@ public class Main extends Application
 
                 if (time.getNow() - lastUIRefresh > 0.5) {
                     lastUIRefresh = time.getNow();
-                    text.setText("FPS: " + (int)avg + " SCORE: " + gameData.getScore());
+                    String label = "FPS: " + fps + "\n";
+                    if (scoreSPI != null) {
+                        label += "Score: " + scoreSPI.getScore() + "\n";
+                    }
+                    text.setText(label);
                     avg = 0;
                     n = 1;
                 }

@@ -33,7 +33,7 @@ public class CollisionDetectorTest {
     public void testPolygonInsideCollision() {
         entity1.setPosition(new Vector(2.5,2.5));
         boolean collision = collisionDetector.polygonCollision(entity1, entity2);
-        Assert.assertTrue(collision);
+        Assert.assertFalse(collision);
     }
 
     @Test

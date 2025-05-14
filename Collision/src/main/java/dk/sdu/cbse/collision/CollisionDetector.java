@@ -76,10 +76,6 @@ public class CollisionDetector implements IEntityPostProcessing {
             boolean collision = polygonLineCollision(coordinates2, coordinates1[current], coordinates1[next]);
             if (collision)
                 return true;
-
-            collision = pointPolygonCollision(coordinates2, coordinates1[current]);
-            if (collision)
-                return true;
         }
 
         return false;

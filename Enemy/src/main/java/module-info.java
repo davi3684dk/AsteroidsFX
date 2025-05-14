@@ -5,9 +5,12 @@ import dk.sdu.cbse.services.IEntityProcessing;
 import dk.sdu.cbse.services.IPlugin;
 
 module Enemy {
-    requires Common;
     requires CommonBullet;
+    requires CommonCollision;
+    requires Common;
+    requires CommonScore;
     uses BulletSPI;
+    uses dk.sdu.cbse.commonscore.ScoreSPI;
     provides IPlugin with Plugin;
     provides IEntityProcessing with EnemyMovementSystem;
 }

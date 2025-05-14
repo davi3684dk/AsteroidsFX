@@ -1,6 +1,8 @@
 package dk.sdu.cbse.enemy;
 
 import dk.sdu.cbse.bulletsystem.BulletSPI;
+import dk.sdu.cbse.commoncollision.IEntityCollisionProcessor;
+import dk.sdu.cbse.commonscore.ScoreSPI;
 import dk.sdu.cbse.data.*;
 import dk.sdu.cbse.services.IEntityProcessing;
 
@@ -8,8 +10,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.ServiceLoader;
 
-public class EnemyMovementSystem implements IEntityProcessing {
+public class EnemyMovementSystem implements IEntityProcessing, IEntityCollisionProcessor {
     private Random rand = new Random();
+    private ScoreSPI scoreSPI = ServiceLoader.load(ScoreSPI.class).findFirst().orElse(null);
 
     @Override
     public void process(Time time, GameData gameData, World world) {
@@ -73,5 +76,14 @@ public class EnemyMovementSystem implements IEntityProcessing {
 
     private BulletSPI getBulletSPI() {
         return ServiceLoader.load(BulletSPI.class).findFirst().orElse(null);
+    }
+
+    @Override
+    public void onCollision(Time time, GameData gameData, World world, Entity entity1, Entity entity2) {
+        if (entity1 instanceof Enemy || entity2 instanceof Enemy) {
+            if (scoreSPI != null) {
+                scoreSPI.addScore(5000);
+            }
+        }
     }
 }
