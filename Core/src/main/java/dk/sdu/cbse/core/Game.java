@@ -28,11 +28,17 @@ public class Game {
     private final int fps = 120;
     private double lastFrame;
 
-    private final ScoreSPI scoreSPI = ServiceLoader.load(ScoreSPI.class).findFirst().orElse(null);
-    private List<IPlugin> plugins;
-    private List<IEntityProcessing> entityProcessings;
-    private List<IEntityPostProcessing> entityPostProcessings;
+    private final ScoreSPI scoreSPI;
+    private final List<IPlugin> plugins;
+    private final List<IEntityProcessing> entityProcessings;
+    private final List<IEntityPostProcessing> entityPostProcessings;
 
+    public Game(List<IPlugin> plugins, List<IEntityProcessing> entityProcessings, List<IEntityPostProcessing> entityPostProcessings, ScoreSPI scoreService) {
+        this.plugins = plugins;
+        this.entityProcessings = entityProcessings;
+        this.entityPostProcessings = entityPostProcessings;
+        this.scoreSPI = scoreService;
+    }
 
     public void start(Stage stage) {
         text.setFill(Color.WHITE);
@@ -73,7 +79,7 @@ public class Game {
 
 
         //Run start method for all plugins
-        getPluginServices().forEach(p -> p.start(gameData, world));
+        plugins.forEach(p -> p.start(gameData, world));
 
         initGameLoop();
 
@@ -102,7 +108,7 @@ public class Game {
 
                 lastFrame = nowSeconds;
 
-                getEntityProcessingServices().forEach(e -> e.process(time, gameData, world));
+                entityProcessings.forEach(e -> e.process(time, gameData, world));
 
                 avg = avg * (n-1)/n + (1 / time.getDeltaTime()) / n;
                 n++;
@@ -121,7 +127,7 @@ public class Game {
 
                 gameData.getInput().update();
 
-                getEntityPostProcessingServices().forEach(e -> e.postProcess(time, gameData, world));
+                entityPostProcessings.forEach(e -> e.postProcess(time, gameData, world));
             }
         }.start();
     }
@@ -153,29 +159,5 @@ public class Game {
             polygon.setTranslateY(entity.getPosition().getY());
             polygon.setRotate(entity.getRotation());
         }
-    }
-
-    private List<IPlugin> getPluginServices() {
-        if (plugins == null) {
-            plugins = new ArrayList<>();
-            ServiceLoader.load(IPlugin.class).forEach(plugins::add);
-        }
-        return plugins;
-    }
-
-    private List<IEntityProcessing> getEntityProcessingServices() {
-        if (entityProcessings == null) {
-            entityProcessings = new ArrayList<>();
-            ServiceLoader.load(IEntityProcessing.class).forEach(entityProcessings::add);
-        }
-        return entityProcessings;
-    }
-
-    private List<IEntityPostProcessing> getEntityPostProcessingServices() {
-        if (entityPostProcessings == null) {
-            entityPostProcessings = new ArrayList<>();
-            ServiceLoader.load(IEntityPostProcessing.class).forEach(entityPostProcessings::add);
-        }
-        return entityPostProcessings;
     }
 }

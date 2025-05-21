@@ -2,6 +2,7 @@ package dk.sdu.cbse.core;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main extends Application
 {
@@ -12,7 +13,9 @@ public class Main extends Application
 
     @Override
     public void start(Stage stage) throws Exception {
-        Game game = new Game();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CoreConfig.class);
+
+        Game game = context.getBean(Game.class);
         game.start(stage);
     }
 }
