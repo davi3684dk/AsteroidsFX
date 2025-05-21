@@ -13,17 +13,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 public class Game {
     private final Pane gameWindow = new Pane();
-    private final GameData gameData = new GameData();
-    private final World world = new World();
+
+    @Autowired
+    private GameData gameData;
+
+    @Autowired
+    private World world;
+
+    @Autowired
+    private Time time;
+
     private final HashMap<Entity, Polygon> entityPolygonHashMap = new HashMap<>();
     private final Text text = new Text(10, 20, "FPS: 10 \n Bullets: 0");
-
-    private final Time time = new Time();
 
     private final int fps = 120;
     private double lastFrame;

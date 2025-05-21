@@ -7,6 +7,7 @@ module Core {
     requires Common;
     requires CommonScore;
     requires spring.context;
+    requires spring.beans;
     opens dk.sdu.cbse.core to javafx.graphics, spring.core;
     exports dk.sdu.cbse.core;
     uses IEntityProcessing;

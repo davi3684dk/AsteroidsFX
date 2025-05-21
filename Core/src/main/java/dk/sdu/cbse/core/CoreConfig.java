@@ -1,5 +1,8 @@
 package dk.sdu.cbse.core;
 import dk.sdu.cbse.commonscore.ScoreSPI;
+import dk.sdu.cbse.data.GameData;
+import dk.sdu.cbse.data.Time;
+import dk.sdu.cbse.data.World;
 import dk.sdu.cbse.services.IEntityPostProcessing;
 import dk.sdu.cbse.services.IEntityProcessing;
 import dk.sdu.cbse.services.IPlugin;
@@ -12,6 +15,9 @@ import java.util.stream.Collectors;
 
 @Configuration
 public class CoreConfig {
+    private final GameData gameData = new GameData();
+    private final World world = new World();
+    private final Time time = new Time();
 
     @Bean
     public Game game() {
@@ -36,5 +42,20 @@ public class CoreConfig {
     @Bean
     public ScoreSPI scoreService() {
         return ServiceLoader.load(ScoreSPI.class).stream().map(ServiceLoader.Provider::get).findFirst().orElse(null);
+    }
+
+    @Bean
+    public World world() {
+        return world;
+    }
+
+    @Bean
+    public GameData gameData() {
+        return gameData;
+    }
+
+    @Bean
+    public Time time() {
+        return time;
     }
 }
