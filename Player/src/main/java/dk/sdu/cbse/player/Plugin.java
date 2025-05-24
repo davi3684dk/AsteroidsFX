@@ -15,7 +15,6 @@ public class Plugin implements IPlugin {
         player.getPosition().setY(gameData.getDisplayHeight() / 2d);
         player.setColor(1, 1, 1);
         player.setPolygonCoordinates(-15,-10,15,0,-15,10,-11,0);
-        player.setRadius(10);
         player.setLayer(Layer.Player);
 
         world.addEntity(player);

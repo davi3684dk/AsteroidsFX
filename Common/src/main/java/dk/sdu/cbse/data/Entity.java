@@ -8,7 +8,6 @@ public class Entity {
     private double[] polygon;
     private Vector position = new Vector(0,0);
     private double rotation;
-    private double radius;
     private double[] color;
     private Layer layer = Layer.Default;
     private boolean dead;
@@ -47,14 +46,6 @@ public class Entity {
 
     public void setRotation(double rotation) {
         this.rotation = rotation;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
     }
 
     public Layer getLayer() {

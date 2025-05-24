@@ -69,7 +69,6 @@ public class EnemyMovementSystem implements IEntityProcessing, IEntityCollisionP
         enemy.setPosition(position);
         enemy.setColor(1, 0, 0);
         enemy.setPolygonCoordinates(-15,-10,15,0,-15,10,-11,0);
-        enemy.setRadius(15);
         enemy.setLayer(Layer.Enemy);
         return enemy;
     }

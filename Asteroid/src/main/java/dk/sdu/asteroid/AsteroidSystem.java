@@ -82,9 +82,6 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
         asteroid.setLayer(Layer.Enemy);
         asteroid.setHp(hp);
 
-        double radius = Arrays.stream(points).map(Math::abs).max().getAsDouble();
-        asteroid.setRadius(radius);
-
         return asteroid;
     }
 
