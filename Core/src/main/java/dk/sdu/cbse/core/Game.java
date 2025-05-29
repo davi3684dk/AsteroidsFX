@@ -1,6 +1,5 @@
 package dk.sdu.cbse.core;
 
-import dk.sdu.cbse.commonscore.ScoreSPI;
 import dk.sdu.cbse.data.*;
 import dk.sdu.cbse.services.IEntityPostProcessing;
 import dk.sdu.cbse.services.IEntityProcessing;
@@ -13,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -28,11 +28,11 @@ public class Game {
     private final int fps = 120;
     private double lastFrame;
 
-    private final ScoreSPI scoreSPI = ServiceLoader.load(ScoreSPI.class).findFirst().orElse(null);
     private List<IPlugin> plugins;
     private List<IEntityProcessing> entityProcessings;
     private List<IEntityPostProcessing> entityPostProcessings;
 
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public void start(Stage stage) {
         text.setFill(Color.WHITE);
@@ -110,8 +110,9 @@ public class Game {
                 if (time.getNow() - lastUIRefresh > 0.5) {
                     lastUIRefresh = time.getNow();
                     String label = "FPS: " + fps + "\n";
-                    if (scoreSPI != null) {
-                        label += "Score: " + scoreSPI.getScore() + "\n";
+                    String score = restTemplate.getForObject("http://localhost:8080/score", String.class);
+                    if (score != null) {
+                        label += "Score: " + score;
                     }
                     text.setText(label);
                     avg = 0;

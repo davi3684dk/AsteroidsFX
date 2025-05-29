@@ -3,17 +3,18 @@ package dk.sdu.asteroid;
 import dk.sdu.cbse.commoncollision.IEntityCollisionProcessor;
 import dk.sdu.cbse.commonasteroid.Asteroid;
 import dk.sdu.cbse.commonasteroid.AsteroidSPI;
-import dk.sdu.cbse.commonscore.ScoreSPI;
 import dk.sdu.cbse.data.*;
 import dk.sdu.cbse.data.Vector;
 import dk.sdu.cbse.services.IEntityProcessing;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCollisionProcessor {
     Random rand = new Random();
 
-    private ScoreSPI scoreSPI = ServiceLoader.load(ScoreSPI.class).findFirst().orElse(null);
+    RestTemplate restTemplate = new RestTemplate();
 
     @Override
     public void process(Time time, GameData gameData, World world) {
@@ -93,15 +94,15 @@ public class AsteroidSystem implements IEntityProcessing, AsteroidSPI, IEntityCo
     @Override
     public void onCollision(Time time, GameData gameData, World world, Entity entity1, Entity entity2) {
         if (entity1 instanceof SplitterAsteroid splitter)  {
-            if (scoreSPI != null)
-                scoreSPI.addScore((int) ((1f / splitter.getHp()) * 1000));
+            int score = (int) ((1f / splitter.getHp()) * 1000);
+            restTemplate.execute("http://localhost:8080/score/add/" + score, HttpMethod.POST, null, null);
             for (Entity ent : splitAsteroid(splitter, entity2.getRotation())) {
                 world.addEntity(ent);
             }
         }
         else if (entity2 instanceof SplitterAsteroid splitter)  {
-            if (scoreSPI != null)
-                scoreSPI.addScore((int) ((1f / splitter.getHp()) * 1000));
+            int score = (int) ((1f / splitter.getHp()) * 1000);
+            restTemplate.execute("http://localhost:8080/score/add/" + score, HttpMethod.POST, null, null);
             for (Entity ent : splitAsteroid(splitter, entity1.getRotation())) {
                 world.addEntity(ent);
             }

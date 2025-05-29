@@ -8,9 +8,8 @@ module Enemy {
     requires CommonBullet;
     requires CommonCollision;
     requires Common;
-    requires CommonScore;
+    requires spring.web;
     uses BulletSPI;
-    uses dk.sdu.cbse.commonscore.ScoreSPI;
     provides IPlugin with Plugin;
     provides IEntityProcessing with EnemyMovementSystem;
 }

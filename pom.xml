@@ -20,7 +20,6 @@
         <module>CommonCollision</module>
         <module>Enemy</module>
         <module>Score</module>
-        <module>CommonScore</module>
     </modules>
 
     <properties>
